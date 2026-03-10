@@ -1,0 +1,51 @@
+{
+  "name": "myfin365 - 스마트 임대 금융 플랫폼",
+  "short_name": "myfin365",
+  "description": "월세 환급, 카드결제, 계약서 관리 - 임대인·임차인 필수 금융 앱",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a2744",
+  "theme_color": "#1a2744",
+  "orientation": "portrait",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "myfin365 홈 화면"
+    }
+  ],
+  "categories": ["finance", "utilities"],
+  "shortcuts": [
+    {
+      "name": "월세 카드결제",
+      "short_name": "카드결제",
+      "description": "월세를 카드로 빠르게 결제",
+      "url": "./index.html#payment",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "월세 환급 신청",
+      "short_name": "환급신청",
+      "description": "최대 590만원 환급 신청",
+      "url": "./index.html#refund",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
