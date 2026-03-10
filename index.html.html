@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a2744">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>myfin365 - 스마트 임대 금융 플랫폼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--teal:#2ec4b6;--mint:#4ecdc4;--gold:#f7b731;--white:#fff;--g50:#f8f9fa;--g100:#f1f3f5;--g200:#e9ecef;--g300:#dee2e6;--g400:#ced4da;--g500:#adb5bd;--g600:#6c757d;--g800:#343a40;--red:#ff4757;--kakao:#fee500;--gradient:linear-gradient(135deg,#1a2744 0%,#2ec4b6 100%);--shadow-sm:0 2px 8px rgba(26,39,68,.08);--shadow-md:0 4px 20px rgba(26,39,68,.12);--r:16px;--r-sm:10px}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Noto Sans KR',sans-serif;background:#0d1117;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden}
+.phone{width:390px;height:844px;background:var(--white);border-radius:50px;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 10px #161b26,0 0 0 12px #21262d;overflow:hidden;position:relative}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:34px;background:#161b26;border-radius:0 0 20px 20px;z-index:9999}
+.screens{width:100%;height:100%;position:relative;overflow:hidden}
+.screen{position:absolute;top:0;left:0;width:100%;height:100%;background:var(--white);display:none;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.screen.active{display:flex}
+.screen.in{animation:slideIn .35s cubic-bezier(.4,0,.2,1) forwards}
+.screen.back{animation:slideBack .35s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes slideBack{from{transform:translateX(-30%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* SPLASH */
+#s0{background:var(--navy);justify-content:center;align-items:center;position:relative}
+.orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.25}
+.o1{width:280px;height:280px;background:var(--teal);top:-80px;right:-60px;animation:f1 6s ease-in-out infinite}
+.o2{width:200px;height:200px;background:#48cae4;bottom:-40px;left:-50px;animation:f2 8s ease-in-out infinite}
+.o3{width:140px;height:140px;background:var(--gold);top:45%;left:25%;animation:f3 7s ease-in-out infinite}
+@keyframes f1{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,30px)}}
+@keyframes f2{0%,100%{transform:translate(0,0)}50%{transform:translate(25px,-20px)}}
+@keyframes f3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-10px,15px) scale(1.1)}}
+.splash-c{position:relative;z-index:2;text-align:center;animation:fadeUp 1s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.logo-box{width:96px;height:96px;margin:0 auto 22px;background:rgba(255,255,255,.1);border-radius:28px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.s-title{font-family:'Manrope',sans-serif;font-size:30px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:6px}
+.s-title span{color:var(--teal)}
+.s-tag{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:52px}
+.s-stats{display:flex;gap:28px;justify-content:center}
+.s-stat{text-align:center}
+.s-num{font-family:'Manrope',sans-serif;font-size:20px;font-weight:800;color:var(--teal);display:block}
+.s-lbl{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px}
+.loader{position:absolute;bottom:72px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.ld{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:lp 1.2s ease-in-out infinite}
+.ld:nth-child(2){animation-delay:.2s}.ld:nth-child(3){animation-delay:.4s}
+@keyframes lp{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1.2)}}
+
+/* BUTTONS */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:14px;padding:15px;width:100%;cursor:pointer;font-size:15px;font-weight:700;font-family:'Noto Sans KR',sans-serif;transition:all .2s}
+.btn:active{transform:scale(.98)}
+.btn-p{background:var(--gradient);color:#fff;box-shadow:0 4px 20px rgba(26,39,68,.25)}
+.btn-k{background:var(--kakao);color:#3c1e1e}
+.btn-g{background:transparent;color:var(--navy);border:2px solid var(--navy)}
+.btn-t{background:transparent;color:var(--g600);text-decoration:underline;padding:10px}
+
+/* HEADERS */
+.ph{padding:54px 20px 14px;background:var(--white);border-bottom:1px solid var(--g100)}
+.ph-row{display:flex;align-items:center;gap:12px}
+.back{width:36px;height:36px;background:var(--g100);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:18px;flex-shrink:0;transition:background .2s}
+.back:active{background:var(--g200)}
+.ph-t{font-size:17px;font-weight:700;color:var(--navy)}
+
+/* ONBOARDING */
+#s1{background:var(--g50)}
+.top-tabs{display:flex;gap:8px;justify-content:flex-end;padding:0 20px 10px}
+.tt{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;border:1.5px solid var(--g300);background:var(--white);color:var(--g600);cursor:pointer}
+.ob-hero{text-align:center;padding:32px 24px 24px}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(46,196,182,.1);color:var(--teal);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:14px}
+.ob-title{font-size:26px;font-weight:900;color:var(--navy);margin-bottom:6px}
+.ob-sub{font-size:14px;color:var(--g600)}
+.user-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 20px;margin-bottom:20px}
+.uc{background:var(--white);border:2px solid var(--g200);border-radius:var(--r);padding:14px 6px;text-align:center;cursor:pointer;transition:all .2s}
+.uc.sel{border-color:var(--teal);box-shadow:0 0 0 3px rgba(46,196,182,.15);background:rgba(46,196,182,.03)}
+.uc-icon{width:54px;height:54px;margin:0 auto 8px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--g100)}
+.uc.sel .uc-icon{background:rgba(46,196,182,.12)}
+.uc-name{font-size:13px;font-weight:700;color:var(--navy);display:block}
+.uc-sub{font-size:11px;color:var(--g500);display:block;margin-top:2px}
+.feat-box{margin:0 20px 20px;background:var(--white);border-radius:var(--r);padding:18px;border:1px solid var(--g200)}
+.feat-ttl{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.feat-badge{background:var(--gradient);color:#fff;font-size:11px;padding:3px 8px;border-radius:10px;font-weight:600}
+.feat-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--g800);margin-bottom:8px}
+.feat-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}
+.feat-hi{font-weight:700;color:var(--teal)}
+.login-bot{padding:0 20px 36px;display:flex;flex-direction:column;gap:10px}
+
+/* MODALS */
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:100;display:none;align-items:flex-end;backdrop-filter:blur(4px)}
+.overlay.act{display:flex;animation:fi .2s ease}
+.overlay.center{align-items:center;justify-content:center}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.sheet{background:var(--white);border-radius:24px 24px 0 0;padding:20px 20px 40px;width:100%;animation:su .3s cubic-bezier(.4,0,.2,1)}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.handle{width:40px;height:4px;background:var(--g300);border-radius:2px;margin:0 auto 18px}
+.m-title{font-size:18px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:4px}
+.m-sub{font-size:13px;color:var(--g600);text-align:center;margin-bottom:18px}
+.cmodal{background:var(--white);border-radius:20px;padding:26px 22px;width:calc(100% - 48px);animation:pi .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pi{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+
+/* SERVICE */
+#s2{background:var(--g50)}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 20px 0}
+.svc-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--r);padding:18px 14px;cursor:pointer;transition:all .2s;min-height:126px;display:flex;flex-direction:column;justify-content:space-between}
+.svc-card:active{border-color:var(--teal);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.svc-name{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.svc-desc{font-size:11.5px;color:var(--teal);font-weight:600;line-height:1.5}
+.svc-icon{font-size:26px;margin-top:10px}
+.svc-full{grid-column:1/-1;flex-direction:row;align-items:center;min-height:68px;padding:14px 18px}
+.svc-full .svc-icon{margin-top:0;margin-left:10px}
+
+/* RENTAL FORM */
+#s3{background:var(--g50)}
+.steps{display:flex;align-items:center;padding:10px 20px}
+.sdot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.sdot.done{background:var(--teal);color:#fff}.sdot.cur{background:var(--navy);color:#fff}.sdot.pend{background:var(--g200);color:var(--g500)}
+.sline{flex:1;height:2px;background:var(--g200);margin:0 6px}.sline.done{background:var(--teal)}
+.fsec{padding:18px;display:flex;flex-direction:column;gap:16px;flex:1}
+.fgrp{background:var(--white);border-radius:var(--r);padding:18px;border:1px solid var(--g200)}
+.flbl{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;display:block}
+.segs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--g100);border-radius:10px;padding:3px;gap:2px}
+.seg{padding:9px;text-align:center;font-size:13px;font-weight:600;color:var(--g600);border-radius:8px;cursor:pointer;border:none;background:transparent;font-family:'Noto Sans KR',sans-serif;transition:all .2s}
+.seg.a{background:var(--white);color:var(--navy);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.ff{background:var(--g50);border:1.5px solid var(--g200);border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:border-color .2s;min-height:52px}
+.ff.hi{border-color:var(--teal);background:rgba(46,196,182,.04)}
+.fflbl{font-size:12px;color:var(--g500)}
+.ffval{font-size:14px;font-weight:700;color:var(--navy)}
+.ffunit{font-size:12px;color:var(--g500);margin-left:2px}
+.hint{display:flex;align-items:flex-start;gap:6px;font-size:11.5px;color:var(--g500);margin-top:8px;line-height:1.5}
+.hint-i{color:var(--teal);flex-shrink:0}
+.cbrow{display:flex;align-items:center;gap:10px;margin-top:10px;cursor:pointer;padding:10px 14px;background:var(--g50);border-radius:10px;border:1.5px solid var(--g200)}
+.cbrow.ck{border-color:var(--teal);background:rgba(46,196,182,.05)}
+.ccb{width:20px;height:20px;border:2px solid var(--g400);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:13px}
+.cbrow.ck .ccb{background:var(--teal);border-color:var(--teal);color:#fff}
+.cb-t{font-size:13px;color:var(--g800)}
+.sticky{padding:14px 20px;background:var(--white);border-top:1px solid var(--g100)}
+
+/* PAYMENT */
+#s4{background:var(--g50)}
+.pay-hero{background:var(--gradient);padding:54px 20px 26px;position:relative;overflow:hidden}
+.pay-hero::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);right:-50px;top:-50px}
+.ph-label{font-size:11px;font-weight:600;opacity:.7;letter-spacing:1px;text-transform:uppercase;color:#fff;margin-bottom:6px}
+.ph-title{font-size:22px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:4px}
+.ph-title span{color:var(--teal)}
+.ph-sub{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:14px}
+.pay-flow{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);border-radius:var(--r);padding:12px 14px;border:1px solid rgba(255,255,255,.15)}
+.pf-step{text-align:center;flex:1}
+.pf-icon{font-size:20px;display:block;margin-bottom:3px}
+.pf-text{font-size:10px;font-weight:600;color:rgba(255,255,255,.85)}
+.pf-arr{color:rgba(255,255,255,.4);font-size:14px}
+.pay-benefits{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+.pb-item{color:rgba(255,255,255,.85);font-size:12px;display:flex;align-items:center;gap:8px}
+.pb-check{color:var(--teal)}
+.card-sec{padding:18px 20px 0}
+.sec-ttl{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.sec-badge{font-size:11px;background:rgba(46,196,182,.1);color:var(--teal);padding:3px 10px;border-radius:20px;font-weight:600}
+.card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.bcard{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:transform .2s}
+.bcard:active{transform:scale(.9)}
+.blogo{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;border:1.5px solid var(--g200);background:var(--white);transition:all .2s;box-shadow:var(--shadow-sm)}
+.bcard.sel .blogo{border-color:var(--teal);box-shadow:0 0 0 3px rgba(46,196,182,.2)}
+.bname{font-size:11px;color:var(--g600);font-weight:500}
+.terms-sec{padding:14px 20px 16px}
+.term-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--white);border-radius:10px;margin-bottom:8px;border:1px solid var(--g200);cursor:pointer}
+.term-item.ck{border-color:var(--teal)}
+.t-text{flex:1;font-size:13px;color:var(--g800)}
+.t-arr{color:var(--g400);font-size:14px}
+.npay{background:#03C75A;color:#fff;padding:10px 14px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.npay-logo{font-family:'Manrope',sans-serif;font-size:14px;font-weight:800}
+
+/* COMPLETE */
+#s5{background:var(--g50)}
+.comp-hero{background:var(--white);padding:54px 20px 22px;text-align:center;border-bottom:1px solid var(--g100)}
+.si{width:70px;height:70px;background:linear-gradient(135deg,#2ec4b6,#4ecdc4);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:30px;color:#fff;box-shadow:0 8px 24px rgba(46,196,182,.3);animation:sp .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes sp{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.comp-ttl{font-size:20px;font-weight:900;color:var(--navy);line-height:1.4;margin-bottom:8px}
+.comp-sub{font-size:13px;color:var(--g600);line-height:1.6}
+.cont-sec{padding:18px;display:flex;flex-direction:column;gap:14px}
+.cont-card{background:var(--white);border-radius:var(--r);padding:18px;border:1px solid var(--g200)}
+.cont-lbl{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.inp{background:var(--g50);border:1.5px solid var(--g200);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--navy);width:100%;font-family:'Noto Sans KR',sans-serif;outline:none;transition:border-color .2s;margin-bottom:0}
+.inp:focus{border-color:var(--teal);background:rgba(46,196,182,.04)}
+.inp::placeholder{color:var(--g400)}
+.upload{border:2px dashed var(--g300);border-radius:var(--r-sm);padding:26px;text-align:center;cursor:pointer;transition:all .2s;background:var(--g50)}
+.upload:hover{border-color:var(--teal);background:rgba(46,196,182,.04)}
+.warn{font-size:12px;color:var(--red);display:flex;align-items:flex-start;gap:6px;line-height:1.5;margin-top:10px}
+
+/* DASHBOARD */
+#s6{background:var(--g50);padding-bottom:80px}
+.dash-hd{background:var(--gradient);padding:54px 20px 28px;position:relative;overflow:hidden}
+.dash-hd::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);right:-60px;top:-60px}
+.dash-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.dlogo{font-family:'Manrope',sans-serif;font-size:20px;font-weight:800;color:#fff}
+.dlogo span{color:var(--teal)}
+.d-icons{display:flex;gap:10px}
+.dib{width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:15px;border:none}
+.d-greet{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:3px}
+.d-user{font-size:20px;font-weight:800;color:#fff}
+.sum-card{background:rgba(255,255,255,.12);border-radius:var(--r);padding:14px 16px;margin-top:16px;border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(4px)}
+.sum-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sum-lbl{font-size:12px;color:rgba(255,255,255,.6);font-weight:500}
+.sum-status{background:rgba(46,196,182,.3);color:var(--teal);padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.sum-amt{font-family:'Manrope',sans-serif;font-size:22px;font-weight:800;color:#fff}
+.sum-amt span{font-size:13px;font-weight:500;opacity:.7;margin-left:2px}
+.sum-div{height:1px;background:rgba(255,255,255,.15);margin:8px 0}
+.sum-meta{display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.5)}
+.dsec{padding:18px 20px 0}
+.dsec-ttl{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:12px}
+.qgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.qi{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform .2s}
+.qi:active{transform:scale(.9)}
+.qicon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--shadow-sm)}
+.q-teal{background:linear-gradient(135deg,#2ec4b6,#48cae4)}
+.q-navy{background:linear-gradient(135deg,#1a2744,#2d4070)}
+.q-gold{background:linear-gradient(135deg,#f7b731,#fca000)}
+.q-green{background:linear-gradient(135deg,#2ecc71,#27ae60)}
+.q-purple{background:linear-gradient(135deg,#8b5cf6,#7c3aed)}
+.q-red{background:linear-gradient(135deg,#ff6b6b,#ee5a24)}
+.q-blue{background:linear-gradient(135deg,#3742fa,#2c3e9e)}
+.q-pink{background:linear-gradient(135deg,#fd79a8,#e84393)}
+.qlbl{font-size:11px;color:#495057;font-weight:600;text-align:center;line-height:1.3}
+.mbanner{background:var(--gradient);margin:0 20px 14px;border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;overflow:hidden;position:relative}
+.mbanner::before{content:'💰';position:absolute;right:-5px;bottom:-8px;font-size:52px;opacity:.12}
+.mtext{color:#fff}
+.mlbl{font-size:11px;opacity:.7;font-weight:600;margin-bottom:3px}
+.mttl{font-size:16px;font-weight:900;line-height:1.3}
+.mamt{font-family:'Manrope',sans-serif;font-size:20px;font-weight:800;color:var(--teal)}
+.mbtn{background:#fff;color:var(--navy);font-size:12px;font-weight:800;padding:7px 13px;border-radius:20px;border:none;cursor:pointer;white-space:nowrap;font-family:'Noto Sans KR',sans-serif}
+.ai-ban{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);margin:0 20px 14px;border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.ai-ic{font-size:26px;width:46px;height:46px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-c{flex:1}
+.ai-lbl{font-size:11px;color:rgba(255,255,255,.7);font-weight:600;margin-bottom:2px}
+.ai-ttl{font-size:13px;font-weight:800;color:#fff;line-height:1.4}
+.ai-arr{color:rgba(255,255,255,.5);font-size:17px}
+.act-list{display:flex;flex-direction:column;gap:1px;background:var(--g200);border-radius:var(--r);overflow:hidden}
+.act-item{background:var(--white);padding:13px 15px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.act-item:active{background:var(--g50)}
+.act-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ai-t{background:rgba(46,196,182,.1)}.ai-n{background:rgba(26,39,68,.08)}.ai-g{background:rgba(247,183,49,.1)}
+.act-cnt{flex:1}
+.act-ttl{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.act-dt{font-size:11.5px;color:var(--g500)}
+.act-amt{font-family:'Manrope',sans-serif;font-size:14px;font-weight:800;color:var(--navy)}
+.st{font-size:11px;padding:3px 9px;border-radius:12px;font-weight:600}
+.st-d{background:rgba(46,196,182,.1);color:var(--teal)}
+.st-p{background:rgba(247,183,49,.1);color:#d68f00}
+.bnav{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--g200);display:flex;padding:8px 0 22px;z-index:50}
+.nv{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:5px 0;border:none;background:transparent}
+.nv-i{font-size:21px}
+.nv-l{font-size:10px;font-weight:600;color:var(--g500);font-family:'Noto Sans KR',sans-serif}
+.nv.a .nv-l{color:var(--teal)}
+.fab{position:absolute;bottom:88px;right:18px;z-index:60}
+.fab-b{width:50px;height:50px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(26,39,68,.3);cursor:pointer;border:none;font-size:22px;color:#fff;transition:transform .2s}
+.fab-b:active{transform:scale(.9)}
+
+@media(max-width:480px){body{background:#fff;align-items:flex-start}.phone{width:100vw;height:100vh;border-radius:0;box-shadow:none}.notch{display:none}}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screens">
+
+  <!-- S0: SPLASH -->
+  <div class="screen active" id="s0">
+    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+    <div class="splash-c">
+      <div class="logo-box">
+        <svg width="60" height="60" viewBox="0 0 64 64" fill="none">
+          <path d="M10 44C10 44 16 26 32 26" stroke="#2ec4b6" stroke-width="8" stroke-linecap="round"/>
+          <path d="M32 26C48 26 54 10 54 10" stroke="white" stroke-width="8" stroke-linecap="round"/>
+          <path d="M32 26C32 26 32 46 48 46" stroke="#4ecdc4" stroke-width="6" stroke-linecap="round" stroke-dasharray="4 3"/>
+        </svg>
+      </div>
+      <div class="s-title">my<span>fin</span>365</div>
+      <div class="s-tag">스마트 임대 금융 플랫폼</div>
+      <div class="s-stats">
+        <div class="s-stat"><span class="s-num">100만+</span><span class="s-lbl">누적 사용자</span></div>
+        <div class="s-stat"><span class="s-num">590만원</span><span class="s-lbl">최대 환급</span></div>
+        <div class="s-stat"><span class="s-num">4.9★</span><span class="s-lbl">앱 평점</span></div>
+      </div>
+    </div>
+    <div class="loader"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>
+  </div>
+
+  <!-- S1: ONBOARDING -->
+  <div class="screen" id="s1">
+    <div style="background:var(--white);padding-top:44px;">
+      <div class="top-tabs">
+        <div class="tt">마스터</div><div class="tt">중개인</div>
+      </div>
+    </div>
+    <div style="overflow-y:auto;flex:1;">
+      <div class="ob-hero">
+        <div class="badge">🏆 임차인 필수앱 1위</div>
+        <div class="ob-title">나는 누구인가요?</div>
+        <div class="ob-sub">맞춤 서비스를 제공해 드릴게요</div>
+      </div>
+      <div class="user-grid">
+        <div class="uc" id="uc-ll" onclick="pickUser('ll')">
+          <div class="uc-icon">🏠</div>
+          <span class="uc-name">임대인</span><span class="uc-sub">(집주인)</span>
+        </div>
+        <div class="uc sel" id="uc-tn" onclick="pickUser('tn')">
+          <div class="uc-icon">🧑</div>
+          <span class="uc-name">임차인</span><span class="uc-sub">(세입자)</span>
+        </div>
+        <div class="uc" id="uc-ow" onclick="pickUser('ow')">
+          <div class="uc-icon">🏡</div>
+          <span class="uc-name">자가거주민</span><span class="uc-sub">(부모님/내집)</span>
+        </div>
+      </div>
+      <div class="feat-box">
+        <div class="feat-ttl">세입자 필수앱 myfin365 <span class="feat-badge">NEW</span></div>
+        <div id="feat-list">
+          <div class="feat-item"><div class="feat-dot"></div>월세 최대 <span class="feat-hi">590만원 환급</span></div>
+          <div class="feat-item"><div class="feat-dot"></div>집/동네 실거주 리뷰 &amp; 평점</div>
+          <div class="feat-item"><div class="feat-dot"></div>단기임대 (1박~한달)</div>
+          <div class="feat-item"><div class="feat-dot"></div>월세 신용카드 결제 &amp; 포인트 적립</div>
+          <div class="feat-item"><div class="feat-dot"></div><span class="feat-hi">AI 임대계약 분석</span> 서비스 🆕</div>
+        </div>
+      </div>
+      <div class="login-bot">
+        <button class="btn btn-k" onclick="showOv('ov-kakao')">💬 카카오톡으로 시작하기</button>
+        <button class="btn btn-t" onclick="go('s2')">휴대폰 번호로 시작하기</button>
+      </div>
+    </div>
+    <!-- Kakao overlay -->
+    <div class="overlay" id="ov-kakao" onclick="hideOv('ov-kakao')">
+      <div class="sheet" onclick="event.stopPropagation()">
+        <div class="handle"></div>
+        <div style="text-align:center;margin-bottom:18px;">
+          <div style="font-size:38px;margin-bottom:10px;">🏠</div>
+          <div class="m-title">myfin365 시작합니다</div>
+          <div class="m-sub">100만 임대 금융 플랫폼<br>카카오 로그인으로 진행됩니다</div>
+        </div>
+        <button class="btn btn-k" onclick="hideOv('ov-kakao');go('s2')">💬 카카오로 시작하기</button>
+        <button class="btn btn-t" onclick="hideOv('ov-kakao')">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2: SERVICE SELECTION -->
+  <div class="screen" id="s2">
+    <div class="ph">
+      <div class="ph-row">
+        <button class="back" onclick="gb()">←</button>
+        <span class="ph-t">원하는 서비스를 선택하세요</span>
+      </div>
+    </div>
+    <div style="overflow-y:auto;flex:1;padding-bottom:20px;">
+      <div class="svc-grid">
+        <div class="svc-card" onclick="go('s3')">
+          <div><div class="svc-name">월세 환급</div><div class="svc-desc">최대 590만원<br>환급 가능</div></div>
+          <div class="svc-icon">💰</div>
+        </div>
+        <div class="svc-card" onclick="go('s3')">
+          <div><div class="svc-name">단기임대</div><div class="svc-desc">여행, 출장,<br>한달 살기, 이사</div></div>
+          <div class="svc-icon">🏘️</div>
+        </div>
+        <div class="svc-card svc-full" onclick="go('s4')">
+          <div style="flex:1"><div class="svc-name">월세 카드결제</div><div class="svc-desc">7개월 무이자 · 포인트 적립 · 집주인 동의 불필요</div></div>
+          <div class="svc-icon">💳</div>
+        </div>
+        <div class="svc-card svc-full" onclick="go('s6')">
+          <div style="flex:1"><div class="svc-name">집/동네 실거주 리뷰</div><div class="svc-desc">실제 거주자의 솔직한 후기 확인</div></div>
+          <div class="svc-icon">⭐</div>
+        </div>
+      </div>
+      <!-- AI Banner -->
+      <div style="margin:14px 20px 0;" onclick="go('s6')">
+        <div class="ai-ban" style="margin:0;">
+          <div class="ai-ic">🤖</div>
+          <div class="ai-c"><div class="ai-lbl">NEW · AI 분석</div><div class="ai-ttl">계약서 사진 찍으면<br>위험 조항 자동 분석!</div></div>
+          <div class="ai-arr">›</div>
+        </div>
+      </div>
+      <!-- Referral Banner -->
+      <div style="margin:12px 20px 0;background:linear-gradient(135deg,#f7b731,#fca000);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="go('s6')">
+        <div style="font-size:26px;">🎁</div>
+        <div style="flex:1;color:#fff;"><div style="font-size:11px;opacity:.8;margin-bottom:2px;">친구 초대 이벤트</div><div style="font-size:14px;font-weight:800;">친구 1명 초대 시 <span style="font-size:17px;">₩30,000</span> 캐시백</div></div>
+        <div style="color:rgba(255,255,255,.6);font-size:17px;">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3: RENTAL INFO -->
+  <div class="screen" id="s3">
+    <div class="ph">
+      <div class="ph-row">
+        <button class="back" onclick="gb()">←</button>
+        <span class="ph-t">임대료 정보를 입력해주세요 👇</span>
+      </div>
+    </div>
+    <div style="padding:10px 20px 0;background:#fff;">
+      <div class="steps">
+        <div class="sdot done">✓</div><div class="sline done"></div>
+        <div class="sdot cur">2</div><div class="sline"></div>
+        <div class="sdot pend">3</div>
+      </div>
+    </div>
+    <div class="fsec">
+      <div class="fgrp">
+        <span class="flbl">임대 유형</span>
+        <div class="segs">
+          <button class="seg a" onclick="pickSeg(this)">월세 선불</button>
+          <button class="seg" onclick="pickSeg(this)">월세 후불</button>
+          <button class="seg" onclick="pickSeg(this)">전세</button>
+        </div>
+        <div class="hint"><span class="hint-i">ℹ</span>천원 단위는 5.5처럼 소수점 첫째자리까지 입력해주세요</div>
+        <div class="hint"><span class="hint-i">ℹ</span>비용 입력시 고지서가 무료로 제공됩니다</div>
+      </div>
+      <div class="fgrp">
+        <span class="flbl">임대비용</span>
+        <div class="frow">
+          <div class="ff hi"><span class="fflbl">보증금</span><div><span class="ffval" id="dep">5000</span><span class="ffunit">만원</span></div></div>
+          <div class="ff"><span class="fflbl">월 임대료</span><div><span class="ffval" id="rnt">50</span><span class="ffunit">만원</span></div></div>
+        </div>
+        <div class="frow">
+          <div class="ff" id="mgmt-f"><span class="fflbl">월 관리비</span><div><span class="ffval" id="mgt">0</span><span class="ffunit">만원</span></div></div>
+          <div class="ff" onclick="showOv('ov-date')"><span class="fflbl">임대료 납부일</span><div><span class="ffval" id="pdd">14</span><span class="ffunit">일 ›</span></div></div>
+        </div>
+        <div class="cbrow ck" id="mgmt-cb" onclick="toggleCb(this)">
+          <div class="ccb">✓</div>
+          <span class="cb-t">관리비는 관리실에 따로 납부하거나 없습니다</span>
+        </div>
+      </div>
+      <div class="fgrp">
+        <span class="flbl">계약 기간 <span style="color:var(--g400);font-weight:400">(선택)</span></span>
+        <div class="frow">
+          <div class="ff" onclick="showOv('ov-date')"><span class="fflbl">계약 시작일</span><div><span class="ffval" style="color:var(--g400)">선택</span></div></div>
+          <div class="ff" onclick="showOv('ov-date')"><span class="fflbl">계약 종료일</span><div><span class="ffval" style="color:var(--g400)">선택</span></div></div>
+        </div>
+        <div class="hint"><span class="hint-i">💡</span>계약 만기 <strong>90일 전</strong> 자동 알림을 받으세요!</div>
+      </div>
+    </div>
+    <div class="sticky"><button class="btn btn-p" onclick="go('s4')">다음 단계 →</button></div>
+    <!-- Date picker -->
+    <div class="overlay" id="ov-date" onclick="hideOv('ov-date')">
+      <div class="sheet" onclick="event.stopPropagation()">
+        <div class="handle"></div>
+        <div class="m-title">납부일 선택</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px;" id="date-grid"></div>
+        <button class="btn btn-p" style="margin-top:18px;" onclick="hideOv('ov-date')">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: PAYMENT -->
+  <div class="screen" id="s4">
+    <div style="overflow-y:auto;flex:1;padding-bottom:0;">
+      <div class="pay-hero">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <button class="back" style="background:rgba(255,255,255,.15);color:#fff;flex-shrink:0;" onclick="gb()">←</button>
+          <div>
+            <div class="ph-label">myfin365 PAY</div>
+            <div class="ph-title">월세/<span>관리비</span><br>카드결제 서비스</div>
+          </div>
+        </div>
+        <div class="ph-sub">2번만 연체해도 계약이 해지될 수 있어요.<br>myfin365가 카드결제로 지켜드립니다.</div>
+        <div class="pay-flow">
+          <div class="pf-step"><span class="pf-icon">💳</span><div class="pf-text">카드결제</div></div>
+          <div class="pf-arr">→</div>
+          <div class="pf-step"><span class="pf-icon">🏦</span><div class="pf-text">계좌입력</div></div>
+          <div class="pf-arr">→</div>
+          <div class="pf-step"><span class="pf-icon">💰</span><div class="pf-text">계좌입금</div></div>
+        </div>
+        <div class="pay-benefits">
+          <div class="pb-item"><span class="pb-check">✓</span>임대인(집주인) 동의 불필요</div>
+          <div class="pb-item"><span class="pb-check">✓</span>최대 <strong>7개월 무이자 할부</strong></div>
+          <div class="pb-item"><span class="pb-check">✓</span>인건비/거래대금 등도 가능</div>
+        </div>
+      </div>
+      <div class="card-sec">
+        <div class="sec-ttl">결제카드 선택 <span class="sec-badge">최대 7개월 무이자</span></div>
+        <div class="card-grid" id="cgrid"></div>
+      </div>
+      <div class="terms-sec">
+        <div class="sec-ttl" style="margin-bottom:10px;">약관 동의</div>
+        <div class="term-item ck" onclick="this.classList.toggle('ck')">
+          <div style="width:20px;height:20px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0;">✓</div>
+          <div class="t-text">[필수] 결제 서비스 이용약관 및 개인정보 처리 동의</div>
+          <div class="t-arr">∧</div>
+        </div>
+        <div class="term-item ck" onclick="this.classList.toggle('ck')">
+          <div style="width:20px;height:20px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0;">✓</div>
+          <div class="t-text">서비스 이용약관</div><div class="t-arr">›</div>
+        </div>
+        <div class="term-item ck" onclick="this.classList.toggle('ck')">
+          <div style="width:20px;height:20px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0;">✓</div>
+          <div class="t-text">개인(신용)정보 수집 및 이용 동의</div><div class="t-arr">›</div>
+        </div>
+        <div class="term-item ck" onclick="this.classList.toggle('ck')">
+          <div style="width:20px;height:20px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0;">✓</div>
+          <div class="t-text">myfin365 PAY 이용약관</div><div class="t-arr">›</div>
+        </div>
+        <div class="npay"><div><span class="npay-logo">N pay</span><span style="font-size:12px;opacity:.9;margin-left:8px;">포인트 적립</span></div><div style="font-size:13px;font-weight:700;">최대 10,000원 적립</div></div>
+      </div>
+    </div>
+    <div class="sticky"><button class="btn btn-p" onclick="go('s5');showOv('ov-payconfirm')">결제하기</button></div>
+  </div>
+
+  <!-- S5: COMPLETE -->
+  <div class="screen" id="s5">
+    <div class="comp-hero">
+      <div class="si">✓</div>
+      <div class="comp-ttl">결제됐습니다.<br>계약서 등록으로<br>송금 준비를 마무리해주세요.</div>
+      <div class="comp-sub">입금 계좌의 예금주가 계약서에 기재된<br>임대인과 일치해야 하며 담당자의 계약서<br>검토 후 입금됩니다.</div>
+    </div>
+    <div class="cont-sec">
+      <div class="cont-card">
+        <div class="cont-lbl">받는 분 계좌 (임대인, 관리인, 거래처 등)</div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:8px;">
+          <input class="inp" placeholder="계좌번호 입력 (숫자만)" type="number">
+          <div style="background:var(--g50);border:1.5px solid var(--g200);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--g500);cursor:pointer;white-space:nowrap;display:flex;align-items:center;">은행 선택 ▾</div>
+        </div>
+        <div class="hint"><span class="hint-i">ℹ</span>계약서에 기재된 임대인, 관리인, 거래처 계좌만 송금 가능</div>
+        <div class="hint"><span class="hint-i">ℹ</span>공공임대의 경우 발급받은 가상계좌를 입력해주세요</div>
+      </div>
+      <div class="cont-card">
+        <div class="cont-lbl">보내는 분 이름 (받는 분 계좌에 표시)</div>
+        <input class="inp" value="홍길동" placeholder="이름 입력">
+        <div class="hint" style="margin-top:8px;"><span class="hint-i">ℹ</span>자유롭게 변경할 수 있습니다 (예: 홍길동, 자리101호)</div>
+      </div>
+      <div class="cont-card">
+        <div class="cont-lbl">계약서(증빙 서류) 등록</div>
+        <div class="hint" style="margin-bottom:10px;"><span class="hint-i">ℹ</span>월세의 경우 임대차 계약 당사자 이름, 금액이 나오는 모든 페이지를 촬영해 등록해주세요</div>
+        <div class="upload" id="upl-area" onclick="doUpload()">
+          <div style="font-size:26px;margin-bottom:6px;">📎</div>
+          <div style="font-size:13px;color:var(--g600);">사진/파일 등록</div>
+          <div style="font-size:11px;color:var(--g400);margin-top:3px;">JPG, PNG, PDF 지원</div>
+        </div>
+        <div class="warn"><span>🔴</span><span>송금예정일 전날(2026-02-14)까지 등록되지 않으면 입금이 늦어집니다</span></div>
+      </div>
+    </div>
+    <div class="sticky"><button class="btn btn-p" onclick="go('s6')">홈으로 이동 →</button></div>
+  </div>
+
+  <!-- S6: DASHBOARD -->
+  <div class="screen" id="s6">
+    <div style="overflow-y:auto;height:100%;padding-bottom:80px;">
+      <div class="dash-hd">
+        <div class="dash-top">
+          <div class="dlogo">my<span>fin</span>365</div>
+          <div class="d-icons"><button class="dib">🔔</button><button class="dib">👤</button></div>
+        </div>
+        <div class="d-greet">안녕하세요 😊</div>
+        <div class="d-user">홍길동님의 임대 현황</div>
+        <div class="sum-card">
+          <div class="sum-row"><span class="sum-lbl">이번달 월세</span><span class="sum-status">납부 완료</span></div>
+          <div class="sum-amt">50<span>만원</span></div>
+          <div class="sum-div"></div>
+          <div class="sum-meta"><span>다음 납부일: 2월 14일</span><span>보증금: 5,000만원</span></div>
+        </div>
+      </div>
+      <!-- Marketing Banner -->
+      <div style="padding:18px 20px 0;">
+        <div class="mbanner" onclick="go('s3')">
+          <div class="mtext">
+            <div class="mlbl">💡 세금 환급 서비스</div>
+            <div class="mttl">월세 세액공제로<br>환급받으세요!</div>
+            <div class="mamt">최대 590만원</div>
+          </div>
+          <button class="mbtn">신청하기</button>
+        </div>
+      </div>
+      <!-- Quick grid -->
+      <div class="dsec">
+        <div class="dsec-ttl">빠른 서비스</div>
+        <div class="qgrid">
+          <div class="qi" onclick="go('s4')"><div class="qicon q-teal">💳</div><div class="qlbl">월세<br>카드결제</div></div>
+          <div class="qi" onclick="go('s3')"><div class="qicon q-navy">💰</div><div class="qlbl">월세<br>환급</div></div>
+          <div class="qi" onclick="go('s2')"><div class="qicon q-gold">🏘️</div><div class="qlbl">단기<br>임대</div></div>
+          <div class="qi"><div class="qicon q-green">⭐</div><div class="qlbl">동네<br>리뷰</div></div>
+          <div class="qi"><div class="qicon q-purple">🤖</div><div class="qlbl">AI<br>계약분석</div></div>
+          <div class="qi"><div class="qicon q-blue">📋</div><div class="qlbl">계약서<br>관리</div></div>
+          <div class="qi"><div class="qicon q-red">🚨</div><div class="qlbl">전세<br>사기예방</div></div>
+          <div class="qi"><div class="qicon q-pink">🎁</div><div class="qlbl">친구<br>초대</div></div>
+        </div>
+      </div>
+      <!-- AI Banner -->
+      <div style="padding:16px 20px 0;">
+        <div class="ai-ban">
+          <div class="ai-ic">🤖</div>
+          <div class="ai-c"><div class="ai-lbl">NEW · AI 계약 분석</div><div class="ai-ttl">계약서 사진만 찍으면<br>위험 조항을 바로 알려드려요</div></div>
+          <div class="ai-arr">›</div>
+        </div>
+      </div>
+      <!-- Activity -->
+      <div class="dsec" style="padding-top:16px;">
+        <div class="dsec-ttl">최근 내역</div>
+        <div class="act-list">
+          <div class="act-item">
+            <div class="act-icon ai-t">💳</div>
+            <div class="act-cnt"><div class="act-ttl">월세 카드결제</div><div class="act-dt">2026.01.14 · 신한카드</div></div>
+            <div style="text-align:right"><div class="act-amt">500,000원</div><div class="st st-d">완료</div></div>
+          </div>
+          <div class="act-item">
+            <div class="act-icon ai-g">💰</div>
+            <div class="act-cnt"><div class="act-ttl">월세 환급 신청</div><div class="act-dt">2026.01.10 · 국세청 연동</div></div>
+            <div style="text-align:right"><div class="act-amt">590만원</div><div class="st st-p">심사중</div></div>
+          </div>
+          <div class="act-item">
+            <div class="act-icon ai-n">📋</div>
+            <div class="act-cnt"><div class="act-ttl">계약서 AI 분석</div><div class="act-dt">2025.12.20 · 위험조항 2개</div></div>
+            <div><div class="st st-d">완료</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- 공지사항 -->
+      <div class="dsec" style="padding-top:14px;padding-bottom:4px;">
+        <div class="dsec-ttl">공지사항</div>
+        <div style="background:var(--white);border-radius:var(--r);border:1px solid var(--g200);overflow:hidden;cursor:pointer;">
+          <div style="background:linear-gradient(90deg,rgba(26,39,68,.05),rgba(46,196,182,.1));padding:12px 15px;display:flex;align-items:center;gap:10px;">
+            <div style="font-size:20px;">📢</div>
+            <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:2px;">2026 전월세 세액공제 한도 상향!</div><div style="font-size:12px;color:var(--g600);">최대 공제한도 750만원으로 확대</div></div>
+            <div style="font-family:'Manrope',sans-serif;font-size:17px;font-weight:800;color:var(--teal);">750만</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bottom Nav -->
+    <div class="bnav">
+      <button class="nv a" id="nav0" onclick="setNav(0)"><span class="nv-i">🏠</span><span class="nv-l">홈</span></button>
+      <button class="nv" id="nav1" onclick="setNav(1);go('s4')"><span class="nv-i">💳</span><span class="nv-l">결제</span></button>
+      <button class="nv" id="nav2" onclick="setNav(2)"><span class="nv-i">📋</span><span class="nv-l">계약</span></button>
+      <button class="nv" id="nav3" onclick="setNav(3)"><span class="nv-i">⭐</span><span class="nv-l">리뷰</span></button>
+      <button class="nv" id="nav4" onclick="setNav(4)"><span class="nv-i">👤</span><span class="nv-l">내정보</span></button>
+    </div>
+    <div class="fab"><button class="fab-b" onclick="showOv('ov-quick')">+</button></div>
+    <!-- Quick action overlay -->
+    <div class="overlay" id="ov-quick" onclick="hideOv('ov-quick')">
+      <div class="sheet" onclick="event.stopPropagation()">
+        <div class="handle"></div>
+        <div class="m-title">빠른 등록</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px;">
+          <button class="btn btn-p" onclick="hideOv('ov-quick');go('s4')">💳 월세 카드결제 신청</button>
+          <button class="btn btn-g" onclick="hideOv('ov-quick');go('s3')">📋 임대 정보 등록</button>
+          <button class="btn btn-t" onclick="hideOv('ov-quick')">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment confirm overlay (global) -->
+  <div class="overlay center" id="ov-payconfirm" onclick="hideOv('ov-payconfirm')">
+    <div class="cmodal" onclick="event.stopPropagation()">
+      <div style="text-align:center;margin-bottom:14px;">
+        <div style="font-size:34px;margin-bottom:8px;">💳</div>
+        <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:3px;">주택/상가 월세 카드결제</div>
+        <div style="font-size:14px;font-weight:700;color:#495057;">12개월 할부로 나눠 내세요!</div>
+      </div>
+      <div style="background:rgba(46,196,182,.08);border-radius:14px;padding:14px;margin-bottom:14px;text-align:center;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:14px;">
+          <div style="text-align:center;"><div style="font-size:22px;margin-bottom:4px;">💳</div><div style="font-size:11px;font-weight:700;color:var(--teal);">월세/관리비<br>카드결제 하면</div></div>
+          <div style="font-size:20px;color:var(--teal);">→</div>
+          <div style="text-align:center;"><div style="font-size:22px;margin-bottom:4px;">🏦</div><div style="font-size:11px;font-weight:700;color:var(--navy);">임대인 계좌에<br>내 이름으로 입금</div></div>
+        </div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:4px;text-align:left;">
+          <div style="font-size:12px;color:var(--g600);">• 임대인(집주인) 동의 불필요</div>
+          <div style="font-size:12px;color:var(--g600);">• 7개월 무이자 할부</div>
+          <div style="font-size:12px;color:var(--g600);">• 인건비/거래대금 등도 가능</div>
+        </div>
+      </div>
+      <button class="btn btn-p" onclick="hideOv('ov-payconfirm')">확인</button>
+    </div>
+  </div>
+
+  </div><!-- screens -->
+</div><!-- phone -->
+
+<script>
+const hist=[];
+let cur='s0';
+
+// Splash → Onboarding
+setTimeout(()=>go('s1'),2800);
+
+function go(id){
+  if(cur===id)return;
+  const c=document.getElementById(cur);
+  const n=document.getElementById(id);
+  hist.push(cur);
+  c.classList.remove('active');
+  n.classList.add('active','in');
+  setTimeout(()=>n.classList.remove('in'),400);
+  cur=id;
+}
+
+function gb(){
+  if(!hist.length)return;
+  const prev=hist.pop();
+  const c=document.getElementById(cur);
+  const p=document.getElementById(prev);
+  c.classList.remove('active');
+  p.classList.add('active','back');
+  setTimeout(()=>p.classList.remove('back'),400);
+  cur=prev;
+}
+
+function showOv(id){const o=document.getElementById(id);if(o)o.classList.add('act');}
+function hideOv(id){const o=document.getElementById(id);if(o)o.classList.remove('act');}
+
+function pickUser(t){
+  ['ll','tn','ow'].forEach(u=>document.getElementById('uc-'+u).classList.remove('sel'));
+  document.getElementById('uc-'+t).classList.add('sel');
+  const features={
+    ll:['임대료 수납 자동화 &amp; 고지서 발송','세입자 계약 관리 &amp; 만기 알림','공실 관리 &amp; 임대 수익 분석','<span class="feat-hi">AI 계약서 검토</span> 서비스 🆕','임대 세금 신고 자동화'],
+    tn:['월세 최대 <span class="feat-hi">590만원 환급</span>','집/동네 실거주 리뷰 &amp; 평점','단기임대 (1박~한달)','월세 신용카드 결제 &amp; 포인트 적립','<span class="feat-hi">AI 임대계약 분석</span> 서비스 🆕'],
+    ow:['전세사기 위험도 분석','주택 담보대출 비교','부동산 시세 알림','리모델링 견적 비교','<span class="feat-hi">AI 부동산 투자 분석</span> 🆕'],
+  };
+  document.getElementById('feat-list').innerHTML=(features[t]||features.tn)
+    .map(f=>`<div class="feat-item"><div class="feat-dot"></div>${f}</div>`).join('');
+}
+
+function pickSeg(el){
+  el.closest('.segs').querySelectorAll('.seg').forEach(s=>s.classList.remove('a'));
+  el.classList.add('a');
+}
+
+function toggleCb(el){
+  el.classList.toggle('ck');
+  const f=document.getElementById('mgmt-f');
+  if(f)f.style.opacity=el.classList.contains('ck')?'0.4':'1';
+}
+
+// Build date picker
+(function(){
+  const g=document.getElementById('date-grid');
+  if(!g)return;
+  [1,5,10,14,15,17,20,21,25,28].forEach(d=>{
+    const div=document.createElement('div');
+    div.textContent=d+'일';
+    div.style.cssText=`padding:11px 0;text-align:center;border-radius:10px;background:${d===14?'var(--teal)':'var(--g100)'};color:${d===14?'#fff':'var(--navy)'};font-weight:700;cursor:pointer;font-size:14px;`;
+    div.onclick=()=>{
+      document.querySelectorAll('#date-grid>div').forEach(x=>{x.style.background='var(--g100)';x.style.color='var(--navy)';});
+      div.style.background='var(--teal)';div.style.color='#fff';
+      document.getElementById('pdd').textContent=d;
+    };
+    g.appendChild(div);
+  });
+})();
+
+// Build card grid
+(function(){
+  const cards=[
+    {n:'신한',c:'#0046ff',l:'신한SOL'},
+    {n:'현대',c:'#555',l:'Hyundai'},
+    {n:'삼성',c:'#1428A0',l:'삼성'},
+    {n:'롯데',c:'#e60012',l:'LOCA'},
+    {n:'토스',c:'#3182f6',l:'toss'},
+    {n:'하나',c:'#008a5e',l:'하나'},
+    {n:'국민',c:'#FFB400',l:'KB'},
+    {n:'비씨',c:'#e60026',l:'BC'},
+    {n:'농협',c:'#00a650',l:'NH'},
+    {n:'우리',c:'#005eb8',l:'우리'},
+    {n:'카카오',c:'#3c1e1e',l:'K뱅크'},
+    {n:'더보기',c:'#555',l:'···'},
+  ];
+  const g=document.getElementById('cgrid');
+  if(!g)return;
+  cards.forEach(c=>{
+    g.innerHTML+=`<div class="bcard" onclick="this.closest('.card-grid').querySelectorAll('.bcard').forEach(x=>x.classList.remove('sel'));this.classList.add('sel')">
+      <div class="blogo" style="color:${c.c};font-size:9px;">${c.l}</div>
+      <div class="bname">${c.n}</div>
+    </div>`;
+  });
+})();
+
+function setNav(i){
+  for(let j=0;j<5;j++){const n=document.getElementById('nav'+j);if(n)n.classList.toggle('a',j===i);}
+}
+
+function doUpload(){
+  const a=document.getElementById('upl-area');
+  if(!a)return;
+  a.innerHTML=`<div style="font-size:24px;margin-bottom:6px;">✅</div><div style="font-size:13px;color:var(--teal);font-weight:700;">계약서가 등록되었습니다</div><div style="font-size:11px;color:var(--g400);margin-top:3px;">임대차계약서.jpg</div>`;
+  a.style.borderStyle='solid';a.style.borderColor='var(--teal)';a.style.background='rgba(46,196,182,.05)';
+}
+</script>
+</body>
+</html>
